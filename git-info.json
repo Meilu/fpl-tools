@@ -1,0 +1,22 @@
+{
+  "commit": {
+    "shortHash": "0d9c5eb",
+    "hash": "0d9c5ebf8bdb2bbdc649f89c4402a655d0106121",
+    "subject": "initial commit with main layout",
+    "sanitizedSubject": "initial-commit-with-main-layout",
+    "body": "",
+    "authoredOn": "1735257038",
+    "committedOn": "1735257038",
+    "author": {
+      "name": "Jurgen Welschen",
+      "email": "jurgen.welschen@miniclip.com"
+    },
+    "committer": {
+      "name": "Jurgen Welschen",
+      "email": "jurgen.welschen@miniclip.com"
+    },
+    "notes": "",
+    "branch": "main",
+    "tags": []
+  }
+}

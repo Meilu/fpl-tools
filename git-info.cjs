@@ -10,7 +10,7 @@ gitLastCommit.getLastCommit(
       return;
     }
 
-    const gitInfoPath = path.resolve(__dirname, './src/git-info.json');
+    const gitInfoPath = path.resolve(__dirname, './git-info.json');
     console.log(commit);
     fs.writeFileSync(
       gitInfoPath,

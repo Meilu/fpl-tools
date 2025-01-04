@@ -1,134 +1,167 @@
 <template>
-    <v-app>
-        <v-layout>
-            <v-navigation-drawer v-model="drawer" :rail="rail" permanent @click="hideIfSmallScreen">
-                <template v-slot:prepend>
-                    <v-list-item lines="two" :prepend-avatar="'https://ionicframework.com/docs/img/demos/avatar.svg'"></v-list-item>
-                </template>
-                <v-divider></v-divider>
-                <template>
-                    <v-list nav>
-                        <v-list-subheader>
-                            GENERAL
-                        </v-list-subheader>
-                        <v-list-item title="Dashboard" value="dashboard" @click="goToDashboard">
-                            <template v-slot:prepend>
-                                <v-icon icon="mdi-chart-bar"></v-icon>
-                            </template>
-                        </v-list-item>
-                        <v-list-subheader>PROMOTIONS</v-list-subheader>
-                        <v-list-item title="Create Promotions" @click="goToCreatePromotion">
-                            <template v-slot:prepend>
-                                <v-icon icon="mdi-email-plus-outline"></v-icon>
-                            </template>
-                        </v-list-item>
-                        <v-list-item title="List Promotions" @click="goToListPromotion">
-                            <template v-slot:prepend>
-                                <v-icon icon="mdi-format-list-bulleted"></v-icon>
-                            </template>
-                        </v-list-item>
-                        <v-list-subheader>OTHER</v-list-subheader>
-                        <v-list-item
-                            :prepend-icon="theme.global.name.value === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-                            title="Toggle Theme" value="Toggle Theme" slim @click="toggleTheme"></v-list-item>
-                        <v-list-item prepend-icon="mdi-account" title="Logout" value="Logout"
-                            @click="logOut"></v-list-item>
-                    </v-list>
-                </template>
-                <template v-slot:append>
-                    <v-list density="compact" nav>
-                        <v-list-subheader>BUILD INFO</v-list-subheader>
-                        <v-list-item @click="showBuildInfoDialog = true">
-                            <pre>{{ gitInfo?.commit?.shortHash }}</pre>
-                        </v-list-item>
-                    </v-list>
-                </template>
-            </v-navigation-drawer>
-            <v-app-bar prominent image="/public/images/header_champions2024.png">
-                <v-app-bar-nav-icon variant="text" @click.stop="toggleMenu()" color="white"></v-app-bar-nav-icon>
-            </v-app-bar>
-            <v-main class="scrollable-content">
-                <slot />
-            </v-main>
-        </v-layout>
-    </v-app>
+  <v-layout v-if="useUser.isFirebaseReady.value" column>
+    <v-navigation-drawer permanent v-model="drawer" :rail="rail">
+      <template v-slot:prepend>
+        <v-list-item
+          v-if="isClient"
+          lines="two"
+          class="text-subtitle-2"
+          :prepend-avatar="'https://ionicframework.com/docs/img/demos/avatar.svg'"
+          :subtitle="user != null ? 'Logged In' : 'Logged Out'"
+          ><span class="text-truncate d-inline-block" v-if="user?.email != null" style="max-width: 140px">
+            {{ user?.email }}
+          </span></v-list-item
+        >
+      </template>
+      <v-divider></v-divider>
+      <v-list>
+        <template v-if="isAuthenticated && isClient">
+          <v-list-subheader> GENERAL </v-list-subheader>
+          <v-list-item class="text-subtitle-1" title="Manager Info" @click="router.push({ path: '/tools/fpl/managerinfo' })">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-account"></v-icon>
+            </template>
+          </v-list-item>
+          <v-list-item class="text-subtitle-1" title="Transfers" @click="router.push({ path: '/tools/fpl/transfers' })">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-cash"></v-icon>
+            </template>
+          </v-list-item>
+          <v-list-item class="text-subtitle-1" title="History" @click="router.push({ path: '/tools/fpl/history' })">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-history"></v-icon>
+            </template>
+          </v-list-item>
+          <v-list-item class="text-subtitle-1" title="Team" @click="router.push({ path: '/tools/fpl/team' })">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-account-group"></v-icon>
+            </template>
+          </v-list-item>
+
+          <v-list-subheader>TOOLS</v-list-subheader>
+        </template>
+        <v-list-subheader>OTHER</v-list-subheader>
+        <v-list-item class="text-subtitle-1" title="Settings" @click="router.push({ path: '/tools/fpl/settings' })">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-cog"></v-icon>
+          </template>
+        </v-list-item>
+        <v-list-item
+          v-if="isAuthenticated && isClient"
+          prepend-icon="mdi-account"
+          title="Logout"
+          value="Logout"
+          @click="logOut"
+        ></v-list-item>
+
+        <v-list-item
+          v-if="!isAuthenticated && isClient"
+          prepend-icon="mdi-account"
+          title="Login"
+          value="Login"
+          @click="router.push({ path: '/login' })"
+        ></v-list-item>
+      </v-list>
+      <template v-slot:append>
+        <v-list density="compact" nav>
+          <v-list-subheader>BUILD INFO</v-list-subheader>
+          <v-list-item @click="showBuildInfoDialog = true">
+            <pre>{{ gitInfo?.commit?.shortHash }}</pre>
+          </v-list-item>
+        </v-list>
+      </template>
+    </v-navigation-drawer>
+    <v-app-bar prominent image="/public/images/header6.png">
+      <v-app-bar-nav-icon variant="text" @click.stop="toggleMenu()" color="white"></v-app-bar-nav-icon>
+    </v-app-bar>
+    <v-main class="scrollable-content">
+      <slot />
+    </v-main>
     <v-dialog v-model="showBuildInfoDialog" max-width="500px">
-        <v-card>
-            <v-card-title>Current Commit Info</v-card-title>
-            <v-card-text>
-                <vue-json-pretty :data="gitInfo" :deep="4" :key-name-as-string="true" />
-            </v-card-text>
-            <v-card-actions>
-                <v-btn color="primary" @click="showBuildInfoDialog = false">OK</v-btn>
-            </v-card-actions>
-        </v-card>
+      <v-card>
+        <v-card-title>Current Commit Info</v-card-title>
+        <v-card-text>
+          <vue-json-pretty :data="gitInfo" :deep="4" :key-name-as-string="true" />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="showBuildInfoDialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
+  </v-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useTheme } from 'vuetify';
-import { useRouter } from 'vue-router/auto';
-import { useDisplay } from 'vuetify';
+import { ref, watch } from 'vue'
+import { useDisplay } from 'vuetify'
+import gitInfo from '@/git-info.json'
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
+const userStore = useUserStore()
+const { $firebase, $authService } = useNuxtApp()
+const useUser = useUserComposable({
+  store: userStore,
+  firebaseAuth: $firebase.auth,
+  authService: $authService
+})
 
-const theme = useTheme();
-const display = useDisplay();
-const drawer = ref(true);
-const rail = ref(false);
-const showBuildInfoDialog = ref(false);
+const { logOutUserAction, isAuthenticated, user } = useUser
 
-const toggleTheme = () => {
-    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
-};
+const display = useDisplay()
+const sessionComposable = useSessionComposable(useSessionStore())
+
+const rail = ref(false)
+const showBuildInfoDialog = ref(false)
+const drawer = ref(false)
+const isClient = ref(false)
+
+onMounted(() => {
+  sessionComposable.initializeSession()
+})
 
 const hideIfSmallScreen = () => {
-    if (display.smAndDown.value)
-        drawer.value = false;
+  if (display.smAndDown.value) drawer.value = false
 }
 
 const logOut = async () => {
-    await logOutUserAction();
-    router.push({ name: '/login' });
-};
-
-const goToDashboard = () => {
-    router.push({ name: '/dashboard' });
-};
-
-const goToCreatePromotion = () => {
-    router.push({ name: '/tools/promotions/create' });
-};
-
-const goToListPromotion = () => {
-    router.push({ name: '/tools/promotions/list' });
-};
-
-const goBack = () => {
-    router.go(-1);
-};
-
-const toggleMenu = () => {
-    drawer.value = !drawer.value;
+  await logOutUserAction()
 }
 
-watch(() => display.smAndUp.value, (isLargeScreen) => {
-    drawer.value = isLargeScreen;
-}, { immediate: true });
+const goBack = () => {
+  router.back()
+}
+
+const toggleMenu = () => {
+  drawer.value = !drawer.value
+}
+
+watch(
+  () => display.smAndUp.value,
+  isLargeScreen => {
+    drawer.value = isLargeScreen
+  },
+  { immediate: true }
+)
+
+onMounted(() => {
+  isClient.value = true
+})
 </script>
 
 <style scoped>
 .scrollable-content {
-    height: calc(100vh);
+  height: calc(100vh);
 
-    overflow-y: auto;
+  overflow-y: auto;
 }
 </style>
 
 <style>
 .vjs-tree-node.is-highlight,
 .vjs-tree-node:hover {
-    background-color: transparent;
+  background-color: transparent;
 }
 </style>
