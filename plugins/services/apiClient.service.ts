@@ -2,7 +2,7 @@ import { createApiClient } from 'jurgen-tools-library'
 
 export default defineNuxtPlugin(() => {
   const { $firebase, $authService } = useNuxtApp()
-
+  const config = useRuntimeConfig();
   const userStore = useUserStore()
   const useUser = useUserComposable({
     store: userStore,
@@ -20,8 +20,8 @@ export default defineNuxtPlugin(() => {
 
     return await currentUser.getIdToken()
   }
-
-  const apiClient = createApiClient('http://localhost:4000/', getAccessToken)
+  const apiBaseUrl = config.public.apiBaseUrl;
+  const apiClient = createApiClient(<string>apiBaseUrl, getAccessToken)
 
   return {
     provide: {

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <NuxtLayout :name="layout" />
-    <NuxtPage v-if="useUser.isFirebaseReady.value"/>
+    
   </v-app>
 </template>
 
