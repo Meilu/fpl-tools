@@ -28,6 +28,7 @@ export const fplToolService = () => {
         const result = await $apiClient.get<any>(`/tools/fpl/manager/${teamId}/transfers`);
         return result?.data;
       } catch (error) {
+        debugger;
         if (axios.isAxiosError(error))
           throw(error.response?.data);
       }

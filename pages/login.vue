@@ -2,9 +2,9 @@
   <v-container class="mt-10">
     <v-row class="justify-center">
       <v-col cols="12" sm="12" md="7">
-        <v-card class="mx-auto pa-5" subtitle="Personal collection of tools used in my work.">
+        <v-card class="mx-auto pa-5" subtitle="If this won't get you to the top of the league...">
           <template v-slot:title>
-            <span class="font-weight-black">Welcome to Tools</span>
+            <span class="font-weight-black">Welcome to FPL Tools.</span>
           </template>
           <v-form fast-fail @submit.prevent>
             <v-card-item>

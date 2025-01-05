@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
 
   const getAccessToken = async (): Promise<string | undefined> => {
 
-    const currentUser = useUser.user.value;
+    const currentUser = $firebase.auth.currentUser;
 
     if (!currentUser) {
       return undefined

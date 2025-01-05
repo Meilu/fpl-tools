@@ -1,12 +1,13 @@
 <template>
   <div>
-    siteindex
+    daddas
   </div>
 </template>
 
 <script lang="ts" setup>
-import VueJsonPretty from 'vue-json-pretty'
-import 'vue-json-pretty/lib/styles.css'
+definePageMeta({
+  middleware: 'auth-guard'
+});
 </script>
 
 <style>

@@ -17,7 +17,7 @@
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
     "fpl-interfaces": "^1.1.0",
-    "jurgen-tools-library": "^1.0.25",
+    "jurgen-tools-library": "^1.0.41",
     "lodash": "^4.17.21",
     "nuxt": "^3.15.0",
     "pinia": "^2.2.2",

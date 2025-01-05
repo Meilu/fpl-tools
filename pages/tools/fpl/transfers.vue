@@ -29,10 +29,11 @@ definePageMeta({
 });
 
 onMounted(async () => {
+
   isLoading.value = true
   
   const result = await fplToolComposable.getTransfers()
-
+  
   transfers.value = result
 
   isLoading.value = false

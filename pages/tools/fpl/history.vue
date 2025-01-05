@@ -22,7 +22,6 @@ import VueJsonPretty from 'vue-json-pretty'
 const fplToolComposable = useFplToolComposable()
 const history = ref<string>('')
 const isLoading = ref<boolean>(false)
-const userStore = useUserStore()
 
 definePageMeta({
   middleware: 'auth-guard'

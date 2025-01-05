@@ -1,5 +1,5 @@
 <template>
-  <v-layout v-if="useUser.isFirebaseReady.value" column>
+  <v-layout>
     <v-navigation-drawer permanent v-model="drawer" :rail="rail">
       <template v-slot:prepend>
         <v-list-item
@@ -15,8 +15,8 @@
       </template>
       <v-divider></v-divider>
       <v-list>
+        <v-list-subheader> GENERAL </v-list-subheader>
         <template v-if="isAuthenticated && isClient">
-          <v-list-subheader> GENERAL </v-list-subheader>
           <v-list-item class="text-subtitle-1" title="Manager Info" @click="router.push({ path: '/tools/fpl/managerinfo' })">
             <template v-slot:prepend>
               <v-icon icon="mdi-account"></v-icon>
@@ -75,7 +75,7 @@
       <v-app-bar-nav-icon variant="text" @click.stop="toggleMenu()" color="white"></v-app-bar-nav-icon>
     </v-app-bar>
     <v-main class="scrollable-content">
-      <slot />
+      <NuxtPage />
     </v-main>
     <v-dialog v-model="showBuildInfoDialog" max-width="500px">
       <v-card>
@@ -128,6 +128,7 @@ const hideIfSmallScreen = () => {
 
 const logOut = async () => {
   await logOutUserAction()
+  router.push({ path: '/login' })
 }
 
 const goBack = () => {

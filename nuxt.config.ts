@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   build: {
-    transpile: ['vuetify'],
+    transpile: ['vuetify']
   },
   plugins: [
     '~/plugins/0-firebase.ts',
@@ -12,9 +12,10 @@ export default defineNuxtConfig({
     '~/plugins/services/authentication.service.ts',
     '~/plugins/services/apiClient.service.ts'
   ],
+  pages: true,
   modules: [
     (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
+      nuxt.hooks.hook('vite:extendConfig', config => {
         // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }))
       })
@@ -22,22 +23,21 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt'
   ],
-
   vue: {
     compilerOptions: {
       isCustomElement: tag => tag === 'client-only'
-    },
+    }
   },
   vite: {
     vue: {
       template: {
-        transformAssetUrls,
-      },
-    },
+        transformAssetUrls
+      }
+    }
   },
   piniaPluginPersistedstate: {
     storage: 'sessionStorage',
-    debug: true,
+    debug: true
   },
   runtimeConfig: {
     apiSecret: '',
@@ -50,6 +50,6 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId: '',
       firebaseAppId: '',
       firebaseMeasurementId: ''
-    },
-  },
+    }
+  }
 })
