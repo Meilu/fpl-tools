@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-navigation-drawer permanent v-model="drawer" :rail="rail">
+    <v-navigation-drawer permanent v-model="drawer" @click="hideIfSmallScreen" :rail="rail">
       <template v-slot:prepend>
         <v-list-item
           v-if="isClient"
@@ -17,6 +17,11 @@
       <v-list>
         <v-list-subheader> GENERAL </v-list-subheader>
         <template v-if="isAuthenticated && isClient">
+          <v-list-item class="text-subtitle-1" title="Bootstrap" @click="router.push({ path: '/tools/fpl/bootstrap' })">
+            <template v-slot:prepend>
+              <v-icon icon="mdi-account"></v-icon>
+            </template>
+          </v-list-item>
           <v-list-item class="text-subtitle-1" title="Manager Info" @click="router.push({ path: '/tools/fpl/managerinfo' })">
             <template v-slot:prepend>
               <v-icon icon="mdi-account"></v-icon>
@@ -123,7 +128,8 @@ onMounted(() => {
 })
 
 const hideIfSmallScreen = () => {
-  if (display.smAndDown.value) drawer.value = false
+  if (display.smAndDown.value)
+    drawer.value = false
 }
 
 const logOut = async () => {

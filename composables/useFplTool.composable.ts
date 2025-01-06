@@ -6,10 +6,24 @@ export const useFplToolComposable = () => {
   const store = useFplToolStore()
   const service = fplToolService()
 
+  const bootstrapStore = useFplBootstrapStore();
+
   const settings = computed(() => store.settings)
 
   const setSettings = (settings: ISettings) => {
     store.setSettings(settings)
+  }
+
+  const getBootstrap = async () => {
+    try {
+      const result = await service.getBootstrapStatic()
+
+      if (result)
+        bootstrapStore.setBootstrap(result)
+      
+    } catch (error) {
+      throw error
+    }
   }
 
   const getManager = async () => {
@@ -50,6 +64,7 @@ export const useFplToolComposable = () => {
     getTransfers,
     getHistory,
     getTeam,
+    getBootstrap,
     settings
   }
 }

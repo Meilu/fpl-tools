@@ -7,6 +7,7 @@ export const fplToolService = () => {
     const getBootstrapStatic = async () => {
       try {
         const result = await $apiClient.get<BootstrapStatic>('/tools/fpl/bootstrap');
+        return result?.data;
       } catch (error) {
         if (axios.isAxiosError(error))
           throw(error.response?.data);

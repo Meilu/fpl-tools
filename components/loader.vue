@@ -7,7 +7,7 @@
                         {{ loadingText || "Loading..." }}
                     </v-col>
                     <v-col cols="12">
-                        <v-progress-linear color="yellow-darken-4" height="6" indeterminate
+                        <v-progress-linear color="red-darken-4" height="6" indeterminate
                             rounded></v-progress-linear>
                     </v-col>
                 </v-card>
